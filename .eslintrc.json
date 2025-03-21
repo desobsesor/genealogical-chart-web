@@ -1,0 +1,10 @@
+{
+  "extends": "next/core-web-vitals",
+  "plugins": [
+    "eslint-plugin-tailwindcss", "prettier"
+  ],
+  "rules": {
+    //"tailwindcss/no-unused-classnames": "warn" //,
+    //"prettier/prettier": "warn" // Asegúrate que "prettier/prettier" esté configurado
+  }
+}
