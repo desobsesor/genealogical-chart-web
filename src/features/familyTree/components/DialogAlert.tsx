@@ -9,6 +9,7 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import { memo } from "react";
 
 interface DialogAlertProps {
     children: React.ReactNode;
@@ -16,7 +17,7 @@ interface DialogAlertProps {
     onClick: () => void;
 }
 
-export const DialogAlert: React.FC<DialogAlertProps> = ({ children, onClick, text }) => {
+const DialogAlert: React.FC<DialogAlertProps> = ({ children, onClick, text }) => {
     return (
         <AlertDialog>
             <AlertDialogTrigger>{children}</AlertDialogTrigger>
@@ -35,3 +36,5 @@ export const DialogAlert: React.FC<DialogAlertProps> = ({ children, onClick, tex
         </AlertDialog>
     )
 }
+
+export default memo(DialogAlert)

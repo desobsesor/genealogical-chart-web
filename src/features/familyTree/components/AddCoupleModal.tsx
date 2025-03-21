@@ -1,10 +1,10 @@
 import { Position } from '@xyflow/react';
 import { ArrowLeftCircleIcon, PlusCircleIcon } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
-import { Member } from '../../models/Member.model';
-import { useHelper } from '../../services/context/HelperContext';
-import { Gen, Gender, RelationTypeCouple, RelationTypeMember, Rol } from '../../utils/enum';
-import { getFirstLastNames } from '../../utils/string';
+import React, { memo, useEffect, useState } from 'react';
+import { Member } from '../../../models/Member.model';
+import { useHelper } from '../../../services/context/HelperContext';
+import { Gen, Gender, RelationTypeCouple, RelationTypeMember, Rol } from '../../../utils/enum';
+import { getFirstLastNames } from '../../../utils/string';
 
 interface Props {
     isOpen: boolean;
@@ -147,6 +147,7 @@ const AddCoupleModal: React.FC<Props> = ({ isOpen, onClose, onSubmit }) => {
                     className="bg-white rounded-lg shadow-lg p-2 max-w-xl"
                     onClick={(e) => e.stopPropagation()} >
                     <form onSubmit={handleSubmit} className="flex flex-row h-full text-xs">
+                        {/* Left Panel (Father) */}
                         <div className="flex flex-col bg-white p-4 w-1/2 border-e-2">
                             <h2 className="text-xl font-bold mb-4 text-blue-600">Datos del padre</h2>
                             <label className="mb-2 font-medium">Nombre:</label>
@@ -178,7 +179,7 @@ const AddCoupleModal: React.FC<Props> = ({ isOpen, onClose, onSubmit }) => {
                                     <select
                                         name="father_dead"
                                         id='father_dead'
-                                        value={father.dead ? "true" : "false"}
+                                        value={father.dead === true ? 'true' : 'false'}
                                         onChange={(e) => handleInputChange(e, true)}
                                         className="p-2 border rounded mb-4"
                                     >
@@ -231,7 +232,7 @@ const AddCoupleModal: React.FC<Props> = ({ isOpen, onClose, onSubmit }) => {
                                     <select
                                         name="mother_dead"
                                         id="mother_dead"
-                                        value={mother.dead ? "true" : "false"}
+                                        value={mother.dead === true ? 'true' : 'false'}
                                         onChange={(e) => handleInputChange(e, false)}
                                         className="p-2 border rounded mb-4"
                                     >
@@ -317,4 +318,4 @@ const AddCoupleModal: React.FC<Props> = ({ isOpen, onClose, onSubmit }) => {
     );
 };
 
-export default AddCoupleModal;
+export default memo(AddCoupleModal);

@@ -2,13 +2,13 @@ import { Popover, PopoverContent, PopoverTrigger } from '@radix-ui/react-popover
 import { Handle, NodeToolbar, Position } from '@xyflow/react';
 import { AxeIcon, CalendarPlusIcon, CheckCheckIcon, FileEditIcon, HeartIcon, HeartOffIcon, TriangleIcon, Unlink2Icon, XIcon } from 'lucide-react';
 import { memo, useState } from 'react';
-import { useHelper } from '../../services/context/HelperContext';
-import { RelationTypeCouple, RelationTypeMember } from '../../utils/enum';
+import { useHelper } from '../../../services/context/HelperContext';
+import { RelationTypeCouple, RelationTypeMember } from '../../../utils/enum';
 import AddEventContent from './AddEventContent';
 import AddMemberContent from './AddMemberContent';
 import AddPathologicalDiseasesContent from './AddPathologicalDiseasesContent';
 import EventHoverCard from './EventHoverCard';
-import HoverCardContentDiv from '../layout/HoverCard';
+import HoverCardContentDiv from '../../../components/layout/HoverCard';
 import MemberHoverCard from './MemberHoverCard';
 import PathologicalDiseasesHoverCard from './PathologicalDiseasesHoverCard';
 
@@ -33,6 +33,7 @@ function CustomNode({ data, addChild }: any) {
   }
 
   const setIndice = (data: any, status: boolean) => {
+    //console.log('pasando por aca: ', data);
     const dataMember = { ...data, indice: status };
     setShowPopoverMember(true);
     setCurrentChild(dataMember);
@@ -156,12 +157,36 @@ function CustomNode({ data, addChild }: any) {
             {data.name === RelationTypeCouple.CONVIVIENTES && <span>-</span>}
             {data.name === RelationTypeMember.OTHER && <span className=''>{"//"}</span>}
           </label>
+          {/*<Handle
+              type="target"
+              position={data.positionTarget}
+              className={`bg-transparent border-0 h-0 w-0 z-0`}
+            />
+            <Handle
+              type="source"
+              position={data.positionSource}
+              className={`bg-transparent border-0 h-0 w-0 z-0`}
+            />
+              <Handle
+                id='cb'
+                type="source"
+                position={Position.Bottom}
+                className={`bg-transparent`}
+              />*/}
         </div>}
       {/* //INFO Acciones para cada nodo */}
       {data.age > 0 && <NodeToolbar
         isVisible={data.forceToolbarVisible || undefined}
         position={Position.Bottom}
       >
+        {/*<button className='bg-blue-500 p-1 text-white mx-1 rounded-md w-8 h-8'
+          onClick={() => { setPrevEdit(data) }}>
+          <ExternalLink className='w-6 h-6' />
+        </button>*/}
+        {/*<button className='bg-blue-500 p-1 text-white mx-1 rounded-md w-8 h-8'
+          onClick={() => { setEdit() }}>
+          <Edit2Icon className='w-5 h-5 ml-1' />
+        </button>*/}
         <Popover>
           <PopoverTrigger asChild>
             <button className='bg-blue-500 p-1 text-white mx-1 rounded-md w-8 h-8' onClick={() => { setEdit(data) }}>
@@ -220,6 +245,13 @@ function CustomNode({ data, addChild }: any) {
             <AddPathologicalDiseasesContent />
           </PopoverContent>
         </Popover>}
+        {/*!data.dead && (!data.inGestation && !data.miscarriage && !data.abortion) &&
+          <button className='bg-blue-500 p-1 text-white mx-1 rounded-md w-8 h-8'
+            onClick={() => {
+              addChild(Rol.FATHER, RelationTypeMember.HIJO_LEGITIMO);
+            }}>
+            <PlusCircleIcon className='w-6 h-6' />
+          </button>*/}
       </NodeToolbar>}
     </>
   );

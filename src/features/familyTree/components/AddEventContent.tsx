@@ -3,8 +3,8 @@ import { formatDate, subtractDaysToDate, validateDateWithError } from '@/utils/d
 import { PopoverClose } from '@radix-ui/react-popover';
 import { PlusCircleIcon } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
-import { useHelper } from '../../services/context/HelperContext';
-import { Button } from '../ui/button';
+import { useHelper } from '../../../services/context/HelperContext';
+import { Button } from '../../../components/ui/button';
 
 const AddEventContent: React.FC = () => {
     const [isDateValid, setIsDateValid] = useState(false);

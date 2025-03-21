@@ -1,7 +1,7 @@
-import { DialogAlert } from '@/components/familyTree/DialogAlert';
 import AnnotationNode from '@/components/layout/AnnotationNode';
 import ButtonEdge from '@/components/layout/ButtonEdge';
 import HoverCardContentDiv from '@/components/layout/HoverCard';
+import DialogAlert from '@/features/familyTree/components/DialogAlert';
 import { PathologicalDiseases } from '@/models/PathologicalDiseases.model';
 import { formatDate } from '@/utils/dates';
 import { generateUniqueId } from '@/utils/number';
@@ -29,10 +29,10 @@ import '@xyflow/react/dist/style.css';
 import { ChevronsLeftRightEllipsisIcon, DonutIcon, EraserIcon, FlipVerticalIcon, Grid2x2CheckIcon, Grid2x2XIcon, GroupIcon, ImageDownIcon, Layers2Icon, LayersIcon, LayoutPanelTopIcon, ListChecksIcon, ListCollapseIcon, LocateIcon, LucideWorkflow, NfcIcon, SaveIcon, SpaceIcon, SplitIcon, TrendingUpDownIcon, TriangleIcon, UserPlusIcon, UserRound, UserRoundPlusIcon, UserSquareIcon, XIcon } from 'lucide-react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
-import CustomNode from '../components/familyTree/CustomNode';
-import { initEdges, initEdgesTemplateI, initEdgesTemplateII, initEdgesTemplateIII, initNodes, initNodesTemplateI, initNodesTemplateII, initNodesTemplateIII } from '../components/familyTree/InitialElements';
 import CurrentDateTime from '../components/helpers/CurrentDatetime';
 import ImageCapture from '../components/helpers/ImageCapture';
+import CustomNode from '../features/familyTree/components/CustomNode';
+import initNodesTemplateI, { initEdges, initEdgesTemplateI, initEdgesTemplateII, initEdgesTemplateIII, initNodes, initNodesTemplateII, initNodesTemplateIII } from '../features/familyTree/components/InitialElements';
 import { Member } from '../models/Member.model';
 import { NodeMember } from '../models/NodeMember.model';
 import { useHelper } from '../services/context/HelperContext';
@@ -738,6 +738,11 @@ const App: React.FC = () => {
 
   //#region ACCIONES SOBRE EL LIENZO 
 
+  /*const setFitView = useCallback(() => {
+    const reactFlowInstance = useReactFlow();
+    reactFlowInstance.fitView();
+  }, []);*/
+
   const setMember = useCallback(
     (memberNew: Partial<Member>) =>
       setNodes((nds) => [...nds, memberNew]),
@@ -811,7 +816,24 @@ const App: React.FC = () => {
       }
     });
     const existNode = findNodeByRole(rol === Rol.MOTHER ? Rol.FATHER : Rol.MOTHER);
+    //console.log('existNode', existNode);
 
+    /*
+    setMember({ ...nodeMemberDefault, id: 'parent-1', position: { x: initX - 250, y: initY + 150 }, data: { ...nodeMemberDefault.data, id: 'parent-1', rol: Rol.FATHER, gender: Gender.MALE, age: 14 } });
+    const motherNode = findNodeByRole(Rol.MOTHER);
+    //console.log('motherNode', motherNode);
+    if (motherNode) {
+      setRelationParentsChild([{
+        id: `child-${motherNode?.id}-parent-1`,
+        source: motherNode?.id,
+        target: 'parent-1',
+        animated: false,
+        type: 'step',
+        selected: true,
+        interactionWidth: 4,
+      }]);
+    }
+    */
     if (existNode) {
       setRelationParentsChild([{
         id: `child-${existNode?.id}-${idParent}`,
@@ -823,6 +845,8 @@ const App: React.FC = () => {
         interactionWidth: 4,
       }]);
 
+      //const reactFlowInstance = useReactFlow();
+      //reactFlowInstance.fitView();
     }
   }
 
@@ -831,7 +855,9 @@ const App: React.FC = () => {
     const idNodeConnector = generateUniqueId();
     setInitX(initX + 100);
     const existChild = findNodeByRole(Rol.SON || Rol.DAUGHTER);
+    //console.log('existChild:', existChild);
     const existEdge = findEdgeByNode(existChild?.id);
+    //console.log('existEdge:', existEdge);
     const gender = rol == Rol.SON || rol == Rol.FATHER ? Gender.MALE : Gender.FEMALE
     setMember({
       ...nodeMemberDefault,
@@ -852,6 +878,7 @@ const App: React.FC = () => {
       },
     });
     if (existChild) {
+      //setMember({ ...nodeMemberConnector, id: idNodeConnector, position: { x: initX + 36, y: initY + 280 }, data: { ...nodeMemberConnector.data, rol: rol, gender, age: 0, positionSource: Position.Bottom } });
       setRelationParentsChild([{
         id: `child-${idChild}-${idNodeConnector}`,
         source: idChild,
@@ -860,6 +887,10 @@ const App: React.FC = () => {
         type: 'buttonedge',
         selected: true,
         interactionWidth: 1,
+        /*data: {
+          startLabel: 'start edge label',
+          endLabel: 'end edge label',
+        }*/
       }]);
     }
     if (!existChild) {
@@ -1106,6 +1137,7 @@ const App: React.FC = () => {
                   )
                 );
 
+                //const motherNode = findNodeByRole(Rol.MOTHER);
                 setMember({
                   ...nodeMemberConnector,
                   id: idNodeConnector,
@@ -1143,6 +1175,21 @@ const App: React.FC = () => {
                 handleDeleteEdge('child-parent-1-parent-2');
                 handleDeleteEdge('child-parent-1-parent-1');
                 handleDeleteEdge('child-parent-2-parent-1');
+                /*setMember({
+                  ...nodeMemberConnector,
+                  id: 'idNodeConnector',
+                  relationType: RelationTypeCouple.DIVORCIO,
+                  position: { x: 0, y: initY + 150 },
+                  data: {
+                    ...nodeMemberConnector.data,
+                    name: RelationTypeCouple.DIVORCIO,
+                    rol: Rol.OTHER,
+                    gender: Gender.OTHER,
+                    age: 0,
+                    positionSource: Position.Right,
+                  },
+                  draggable: true
+                });*/
               }}>
               <HoverCardContentDiv data={{ title: 'Agregar relación de divorciados', description: 'Agregar estado actual de la relación entre los padres', time: '' }}>
                 <SplitIcon className='text-gray-600 min-w-6 min-h-6' />
@@ -1233,6 +1280,20 @@ const App: React.FC = () => {
             <ControlButton className='all-items'
               onClick={() => {
                 addChild(Rol.DAUGHTER, RelationTypeMember.HIJO_LEGITIMO);
+                /*const idChild = generateUniqueId();
+                const idNodeConnector = generateUniqueId();
+                setInitX(initX + 150);
+                setMember({ ...nodeMemberDefault, id: idChild, position: { x: initX - 38, y: initY + 150 }, data: { ...nodeMemberDefault.data, rol: Rol.DAUGHTER, gender: Gender.FEMALE, age: 14, positionSource: Position.Top, positionTarget: Position.Bottom } });
+                setMember({ ...nodeMemberConnector, id: idNodeConnector, data: { ...nodeMemberConnector.data, rol: Rol.OTHER, gender: Gender.OTHER, age: 0, positionSource: Position.Right } });
+                setRelationParentsChild([{
+                  id: `child-${idChild}-${idNodeConnector}`,
+                  source: idChild,
+                  target: idNodeConnector,
+                  animated: false,
+                  type: 'step',
+                  selected: true,
+                  interactionWidth: 8
+                }]);*/
               }}>
               <HoverCardContentDiv data={{ title: 'Agregar hija', description: 'Clic para agregar un nuevo nodo de rol hija', time: '' }}>
                 <UserSquareIcon className='text-gray-600 min-w-6 min-h-6' />
@@ -1241,6 +1302,20 @@ const App: React.FC = () => {
             <ControlButton className='all-items'
               onClick={() => {
                 addChild(Rol.DAUGHTER, RelationTypeMember.HIJO_ADOPTIVO);
+                /*const idChild = generateUniqueId();
+                const idNodeConnector = generateUniqueId();
+                setInitX(initX + 150);
+                setMember({ ...nodeMemberDefault, id: idChild, position: { x: initX - 38, y: initY + 150 }, data: { ...nodeMemberDefault.data, rol: Rol.DAUGHTER, gender: Gender.FEMALE, age: 14, positionSource: Position.Top, positionTarget: Position.Bottom } });
+                setMember({ ...nodeMemberConnector, id: idNodeConnector, data: { ...nodeMemberConnector.data, rol: Rol.OTHER, gender: Gender.OTHER, age: 0, positionSource: Position.Right } });
+                setRelationParentsChild([{
+                  id: `child-${idChild}-${idNodeConnector}`,
+                  source: idChild,
+                  target: idNodeConnector,
+                  animated: false,
+                  type: 'step',
+                  selected: true,
+                  interactionWidth: 8
+                }]);*/
               }}>
               <HoverCardContentDiv data={{ title: 'Agregar hija adoptiva', description: 'Clic para agregar un nuevo nodo de rol hija adoptiva', time: '' }}>
                 <ChevronsLeftRightEllipsisIcon className='text-gray-600 min-w-6 min-h-6' />
@@ -1320,6 +1395,15 @@ const App: React.FC = () => {
                 <LocateIcon className='text-gray-600 min-w-6 min-h-6' />
               </HoverCardContentDiv>
             </ControlButton>
+            {/*
+            <div className='border-r-2 text-white border-gray-300 gap-0 my-0'>-</div>
+            <ControlButton className='all-items'
+              onClick={() => handleAddCouple()}>
+              <HoverCardContentDiv data={{ title: 'Agregar familia', description: 'Clic para agregar un conjunto de nodos que representan una familia basica', time: '' }}>
+                <NetworkIcon className='text-gray-600 min-w-6 min-h-6' />
+              </HoverCardContentDiv>
+            </ControlButton>
+            */}
           </Controls>
           <Controls showZoom={true} showInteractive={false} className='mr-8' position={'bottom-left'} orientation='horizontal'  >
             <ControlButton className='all-items' title='Activar la barra de acciones para todos los nodos'
@@ -1344,8 +1428,52 @@ const App: React.FC = () => {
               <CurrentDateTime />
             </div>
           </Panel>
+          {/*<Panel className=' relative w-full justify-center max-w-40 z-50'>
+            <div className='grid grid-cols-1 mt-0 max-w-40'>
+              {false && <div className='flex items-center justify-center gap-x-3 mb-4 mt-0'>
+                <button className='bg-green-600 rounded-md p-2 text-white' onClick={() => setPosition(ReactFlowPosition.Top)}>T</button>
+                <button className='bg-green-600 rounded-md p-2 text-white' onClick={() => setPosition(ReactFlowPosition.Right)}>R</button>
+                <button className='bg-green-600 rounded-md p-2 text-white' onClick={() => setPosition(ReactFlowPosition.Bottom)}>B</button>
+                <button className='bg-green-600 rounded-md p-2 text-white' onClick={() => setPosition(ReactFlowPosition.Left)}>L</button>
+              </div>}
+              {false && <label className='mb-1'>
+                <ToggleSwitch className='mt-3 mb-2 text-xs' initialValue={toolbarVisible} label={'Mostrar acciones'} handleChange={() => { setToolbarVisible(!toolbarVisible); forceToolbarVisible(!toolbarVisible) }} />
+              </label>}
+              {false && <label className='mb-4'>
+                <ToggleSwitch className='mt-3 mb-2 text-xs' initialValue={withGrid} label={'Con grilla'} handleChange={() => { setWithGrid(!withGrid) }} />
+              </label>}
+              <div className='grid grid-cols-1 item-center gap-x-2 text-xs mb-3 max-w-32 gap-y-2'>
+                <button type='button' className='bg-green-600 rounded-lg p-2 text-white cursor-pointer' onClick={() => handleAddCouple()}>Agregar familia</button>
+                {false && <button className='bg-green-600 rounded-md p-2 text-white' onClick={() => { }}>Agregar relación</button>}
+                {false && <button className='bg-green-600 rounded-md p-2 text-white' onClick={() => { }}>Agregar evento</button>}
+              </div>
+              <div className='grid grid-cols-1 item-center gap-x-2 text-xs max-w-32 gap-y-2'>
+                <ImageCapture dataTestId="rf__wrapper" classNames={["react-flow", "bg-white", "light"]} />
+                <button type='button' className='bg-blue-600 hover:bg-blue-700 rounded-lg p-2 mt-1 text-white cursor-pointer' onClick={() => handleSaveInfo()}>Guardar información</button>
+              </div>
+            </div>
+          </Panel>*/}
         </ReactFlow>
       </div>
+      {/*<AddMemberRelationCoupleModal
+        isOpen={showModalRelationCouple}
+        onClose={showModalCouple_}
+        onSubmit={function (message: string, type: string | 'improvement' | 'support'): void {
+          throw new Error('Function not implemented.');
+        }} />
+
+      <AddCoupleModal
+        isOpen={showModalCouple}
+        onClose={showModalCouple_}
+        onSubmit={function (message: string, type: string | 'improvement' | 'support'): void {
+          throw new Error('Function not implemented.');
+        }} />
+      <AddMemberModal
+        isOpen={showModalMember}
+        onClose={showModalMember_}
+        onSubmit={function (message: string, type: string | 'improvement' | 'support'): void {
+          throw new Error('Function not implemented.');
+        }} />*/}
     </>
   );
 };

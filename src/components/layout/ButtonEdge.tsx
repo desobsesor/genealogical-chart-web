@@ -50,6 +50,7 @@ export default function CustomEdge({
 
   const disabled = false;
   const onEdgeClick = () => {
+    //console.log('Click en node');
     setEdges((edges) => edges.filter((edge) => edge.id !== id));
   };
 

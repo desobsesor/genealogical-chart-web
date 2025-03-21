@@ -2,11 +2,14 @@
 
 Familiarization in vite with react flow and typescript
 
-# Introduction to the Family Tree Design Resource
+# Getting Started with this genealogical chart
 
-This tool provides a utility for the construction of family diagrams and ecomaps in the app external module.
+This tool provides a utility for building family diagrams and ecomaps. Integrate this resource into your application.
 
-![Genealogical Logo](public/images/screenshot.png)
+## Preview
+
+![image](./public/genealogical-chart.png)
+
 
 ========================================================================
 

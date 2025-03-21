@@ -2,11 +2,11 @@ import { PopoverClose } from '@radix-ui/react-popover';
 import { Position } from '@xyflow/react';
 import { PlusCircleIcon } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
-import { Member } from '../../models/Member.model';
-import { useHelper } from '../../services/context/HelperContext';
-import { Gen, Gender, RelationTypeMember, Rol } from '../../utils/enum';
-import { Button } from '../ui/button';
-import ToggleSwitch from '../layout/ToggleSwitch';
+import { Member } from '../../../models/Member.model';
+import { useHelper } from '../../../services/context/HelperContext';
+import { Gen, Gender, RelationTypeMember, Rol } from '../../../utils/enum';
+import { Button } from '../../../components/ui/button';
+import ToggleSwitch from '../../../components/layout/ToggleSwitch';
 
 const AddMemberContent: React.FC = () => {
     const {

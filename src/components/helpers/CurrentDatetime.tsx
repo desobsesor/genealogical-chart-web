@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
 import moment from 'moment';
+import React, { useEffect, useState } from 'react';
 
 moment.locale('es', {
   months: 'enero_febrero_marzo_abril_mayo_junio_julio_agosto_septiembre_octubre_noviembre_diciembre'.split('_'),

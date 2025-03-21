@@ -11,6 +11,11 @@ function AnnotationNode({ data }: any) {
                     ))}
                 </div>
             </div>
+            {/*data?.arrowStyle && (
+                <div className="annotation-arrow" style={data?.arrowStyle}>
+                    {'->'}
+                </div>
+            )*/}
         </>
     );
 }

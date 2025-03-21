@@ -18,7 +18,7 @@ export const initEdges: CustomEdge[] = [];
 
 //#region TEMPLATES 
 
-export const initNodesTemplateI: NodeMember[] = [
+const initNodesTemplateI: NodeMember[] = [
     {
         "id": "parent-1",
         "type": "custom",
@@ -1635,3 +1635,5 @@ export const initEdgesTemplateIII: CustomEdge[] = [
 ];
 
 //#endregion
+
+export default initNodesTemplateI;

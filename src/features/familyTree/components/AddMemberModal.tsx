@@ -1,10 +1,10 @@
 import { Position } from '@xyflow/react';
 import { ArrowLeftCircleIcon, PlusCircleIcon } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
-import { Member } from '../../models/Member.model';
-import { useHelper } from '../../services/context/HelperContext';
-import { Gen, Gender, RelationTypeMember, Rol } from '../../utils/enum';
-import ToggleSwitch from '../layout/ToggleSwitch';
+import React, { memo, useEffect, useState } from 'react';
+import { Member } from '../../../models/Member.model';
+import { useHelper } from '../../../services/context/HelperContext';
+import { Gen, Gender, RelationTypeMember, Rol } from '../../../utils/enum';
+import ToggleSwitch from '../../../components/layout/ToggleSwitch';
 
 interface Props {
     isOpen: boolean;
@@ -190,7 +190,7 @@ const AddMemberModal: React.FC<Props> = ({ isOpen, onClose, onSubmit }) => {
                                     <select
                                         name="child_dead"
                                         id='child_dead'
-                                        value={child.dead ? 'true' : 'false'}
+                                        value={child.dead === false ? 'false' : 'true'}
                                         onChange={(e) => handleInputChange(e, true)}
                                         className="p-2 border rounded col-span-2 mb-4"
                                     >
@@ -270,4 +270,4 @@ const AddMemberModal: React.FC<Props> = ({ isOpen, onClose, onSubmit }) => {
     );
 };
 
-export default AddMemberModal;
+export default memo(AddMemberModal);

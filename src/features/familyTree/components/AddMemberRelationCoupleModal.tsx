@@ -1,9 +1,9 @@
 import { Position } from '@xyflow/react';
 import { ArrowLeftCircleIcon, PlusCircleIcon } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
-import { Member } from '../../models/Member.model';
-import { useHelper } from '../../services/context/HelperContext';
-import { Gen, Gender, RelationTypeMember, Rol } from '../../utils/enum';
+import { Member } from '../../../models/Member.model';
+import { useHelper } from '../../../services/context/HelperContext';
+import { Gen, Gender, RelationTypeMember, Rol } from '../../../utils/enum';
 
 interface Props {
     isOpen: boolean;
@@ -74,6 +74,9 @@ const AddMemberRelationCoupleModal: React.FC<Props> = ({ isOpen, onClose, onSubm
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        //console.log({ child });
+        //console.log({ relationship });
+        //console.log({ pointSourceLeftTargetRight });
 
         setAddMember({ child, relationship, pointSourceLeftTargetRight });
         onClose();
